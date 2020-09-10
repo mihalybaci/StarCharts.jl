@@ -76,8 +76,11 @@ date_utc = date_est + Dates.Hour(4)
 # ╔═╡ 94285038-f362-11ea-0be7-b75cf6bd7127
 md"**NOTE:** The `lst` function is designed to read timezones from the computer, so in pratice there is no need to manually manipulate datetimes for local maps."
 
-# ╔═╡ 2d29f774-f362-11ea-01ec-19cecf1ee877
-hour_angle = ha(LST, α)
+# ╔═╡ 2003811c-f370-11ea-2cc8-875dd4f8fd4d
+LST = lst(date_utc, λ)
+
+# ╔═╡ 3ceb1ed2-f370-11ea-0bf3-e37cab474aa6
+hour_angle = ha
 
 # ╔═╡ d608c254-f361-11ea-30a1-ff75ca2a0fe1
 #alt = dsin(ϕ)*dsin(δ) + dcos(ϕ)*dcos(
@@ -103,5 +106,6 @@ hour_angle = ha(LST, α)
 # ╟─0b45912a-f364-11ea-09e7-1ffbba3658d0
 # ╠═e842f6ae-f363-11ea-13fa-c578eb84fc22
 # ╟─94285038-f362-11ea-0be7-b75cf6bd7127
-# ╠═2d29f774-f362-11ea-01ec-19cecf1ee877
+# ╠═2003811c-f370-11ea-2cc8-875dd4f8fd4d
+# ╠═3ceb1ed2-f370-11ea-0bf3-e37cab474aa6
 # ╠═d608c254-f361-11ea-30a1-ff75ca2a0fe1

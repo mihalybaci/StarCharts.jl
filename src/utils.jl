@@ -124,7 +124,7 @@ function lst(datetime::DateTime, λ::Coordinate; localtime::Bool=true)
 end
 
 """
-ha(LST, α)
+lha(LST, α)
 
 Calculate the hour angle for RA at the LST.
 
@@ -137,7 +137,7 @@ Output:
 
     lha::T - the local hour angle, output is type T of lst input
 """
-ha(LST::Coordinate, α::Coordinate) = LST - convert(typeof(LST), α)
+lha(LST::Coordinate, α::Coordinate) = LST - convert(typeof(LST), α)
 
 #=
 
