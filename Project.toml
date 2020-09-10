@@ -1,0 +1,9 @@
+name = "StarCharts"
+uuid = "ecd2fa46-8016-4214-8296-49002d13ea0a"
+authors = ["Michael Alexander <mihalybaci@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+TimeZones = "f269a46b-ccf7-5d73-abea-4c690281aa53"

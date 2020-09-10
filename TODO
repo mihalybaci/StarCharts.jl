@@ -1,0 +1,19 @@
+####################
+These are some ideas for future improvements
+####################
+
+- GUI builder for making charts
+- Pop-up window to show current LST, GMST, UTC, etc.
+- Save and load charts and chart data with BSON?
+- Build a default chart to include:
+    - All naked eye stars
+    - All planets
+    - All Messier objects
+    - "Binocular bright" NGC objects?
+    - The ecliptic
+    - the Galacic center
+    - North/South Celestial Poles (as plus signs)
+    - some kind of low border since in practice seeing to 
+      the horizon is not possible
+    - Date of the chart
+    - Maybe 2 or 3 future dates with the same alt/az
