@@ -1,7 +1,7 @@
 module StarCharts
 
 using Dates
-using Plots
+#using Plots
 using TimeZones
 
 import Base.+

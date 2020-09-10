@@ -5,6 +5,7 @@
 
 =#
 
+#=
 include("../src/StarCharts.jl")
 
 function test_stars()
@@ -40,3 +41,4 @@ plot(star_chart)
 
 scatter(stars[1].RA.D, stars[1].DEC.D)
 scatter!(stars[2].RA.D, stars[2].DEC.D)
+=#

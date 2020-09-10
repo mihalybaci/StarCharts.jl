@@ -77,24 +77,23 @@ gmst_p03(UT1, tᵤ, t) = UT1 + 24110.5493771 + 8640184.79447825*tᵤ + 307.47710
 
 
 """
-lst(datetime::DateTime, λ)
+lst(datetime, λ; localtime=true)::DecimalHour
 
 Calculate the local sidereal time for a given date and time.
 
 Inputs:
 
-    datetime - the datetime given as a DateTime type
-    λ        - reference longitude in decimal degrees
+    datetime::DateTime - the datetime given as a DateTime type
 
 Optional:
 
-    localtime (default:true) - set to false to use UTC datetime
+    localtime::Bool  - set to false to use UTC datetime
 
 Output:
 
-    lst - the Local Sidereal Time in units of decimal hours
+    lst::DecimalHour - the Local Sidereal Time in units of decimal hours
 """
-function lst(datetime::DateTime, λ::Real; localtime::Bool=true)
+function lst(datetime::DateTime, λ::Coordinate; localtime::Bool=true)
     utc = localtime ? local2utc(datetime) : datetime
     ut1 = UT1(hour(utc)*3600 + minute(utc)*60 + second(utc), DUT1)  # Convert to seconds
     utc_jd = datetime2julian(utc)
@@ -108,11 +107,11 @@ function lst(datetime::DateTime, λ::Real; localtime::Bool=true)
     are needed to return the LST. 
       1. Convert the GMST from seconds to hours
       2. Take the modulus to remove the number of whole days since J2000
-      3. Add the longitude in hours (degrees/15)
+      3. Add the longitude in decimal hours by converting the type
       4. Keep the value 0 < LST < 24,
     to be converted to hours, then have the modulus returned remove values of whole days.    
     =#
-    lst_i = (gmst/3600)%24 + λ/15
+    lst_i = (gmst/3600)%24 + convert(DecimalHour, λ).H
     if lst_i < 0
         lst_f = lst_i + 24.0
     elseif lst_i ≥ 24
@@ -121,23 +120,24 @@ function lst(datetime::DateTime, λ::Real; localtime::Bool=true)
         lst_f = lst_i
     end
 
-    return lst_f
+    return DecimalHour(lst_f)
 end
 
 """
-lha(lst, α)
+ha(LST, α)
 
-Calculate the local hour angle for a given RA.
+Calculate the hour angle for RA at the LST.
 
 Inputs:
 
-    lst - local sidereal time
-    α   - right ascension
+    lst::T - Local sidereal time where {T <: Coordinate}
+    α::Coordinate   - Right ascension
+
 Output:
 
-    lha - the local hour angle
+    lha::T - the local hour angle, output is type T of lst input
 """
-lha(lst, α) = lst - α
+ha(LST::Coordinate, α::Coordinate) = LST - convert(typeof(LST), α))
 
 #=
 
@@ -178,17 +178,17 @@ s2d(d, m, s)
 
 Helper function. Converts a sexigessimal coordinate to decimal degrees
 """
-s2d(d, m, s) = d + m/60 + s/3600
+s2d(d, m, s) = (0 ≤ d) ? d + m/60 + s/3600 : d - m/60 - s/3600
 
 """
 d2s(d)
 
 Helper function. Converts a decimal degree coordinate to sexigessimal
 """
-function d2s(DecimalDegree)
-    d = floor(Int, DecimalDegree)
-    m = floor(Int, 60*(DecimalDegree%1))
-    s = round(3600*(DecimalDegree - d - m/60), digits=6)
+function d2s(dd)
+    d = (0 ≤ dd) ? floor(Int, dd) : ceil(Int, dd)
+    m = floor(Int, 60*(abs(dd)%1))
+    s = round(3600*(abs(dd) - abs(d) - m/60), digits=6)
     return d, m, s
 end
 
