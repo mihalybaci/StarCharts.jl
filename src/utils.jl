@@ -137,7 +137,7 @@ Output:
 
     lha::T - the local hour angle, output is type T of lst input
 """
-ha(LST::Coordinate, α::Coordinate) = LST - convert(typeof(LST), α))
+ha(LST::Coordinate, α::Coordinate) = LST - convert(typeof(LST), α)
 
 #=
 
