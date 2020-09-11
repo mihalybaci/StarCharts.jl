@@ -19,6 +19,7 @@ altitude(lat, dec, lha)
 Calculate the altitude of a given position in the sky.
 
 Input:
+
         lat::Coordinate - Latitude of observer
         dec::Coordinate - Declination of object
         lha::Coordinate - Local hour angle of observer+star
@@ -28,10 +29,10 @@ Output:
         altitude::DecimalDegree - Altitude of object in decimal degrees
 """
 function altitude(lat::Coordinate, dec::Coordinate, lha::Coordinate)
-	ϕ = convert(DecimalDegree, lat).D
-	δ = convert(DecimalDegree, dec).D
-	ha = convert(DecimalDegree, lha).D
-	return DecimalDegree(rad2deg(asin(dsin(ϕ)*dsin(δ) + dcos(ϕ)*dcos(δ)*dcos(ha))))
+	ϕ = convert(Radian, lat).R
+	δ = convert(Radian, dec).R
+	ha = convert(Radian, lha).R
+	return DecimalDegree(rad2deg(asin(sin(ϕ)*sin(δ) + cos(ϕ)*cos(δ)*cos(ha))))
 end
 
 
@@ -41,6 +42,7 @@ azimuth(alt, dec, lha)
 Calculate the azimuth of a given position in the sky.
 
 Input:
+
         alt::Coordinate - Altitude of object
         dec::Coordinate - Declination of object
         lha::Coordinate - Local hour angle of observer+star
@@ -50,11 +52,11 @@ Output:
         altitude::DecimalDegree - Azimuth of object in decimal degrees
 """
 function azimuth(altitude::Coordinate, dec::Coordinate, lha::Coordinate)
-	alt = convert(DecimalDegree, altitude).D
-	δ = convert(DecimalDegree, dec).D
-	ha = convert(DecimalDegree, lha).D
+	alt = convert(Radian, altitude).R
+	δ = convert(Radian, dec).R
+	ha = convert(Radian, lha).R
 	
-	return DecimalDegree(rad2deg(asin(dsin(ha)*dcos(δ)/dcos(alt))))
+	return DecimalDegree(rad2deg(asin(sin(ha)*cos(δ)/cos(alt))))
 end
 
 
