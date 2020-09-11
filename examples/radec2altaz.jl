@@ -5,7 +5,7 @@ using Markdown
 using InteractiveUtils
 
 # ╔═╡ 37058e16-f443-11ea-30cc-5b8be9a6b7de
-using Dates
+using TimeZones
 
 # ╔═╡ 611cc5f2-edf9-11ea-2b42-b38a547930c4
 using StarCharts
@@ -59,13 +59,13 @@ where ϕ is the latitude, δ is the declination, and HA is the hour angle."
 md"Set the date of 2021 January 1 00:00:00 Eastern Standard Time (EST)."
 
 # ╔═╡ 6ee858e0-f362-11ea-17e9-9730aa54b8a0
-date_est = DateTime(2021, 01, 01, 0, 0, 0)
+date_est = ZonedDateTime(2021, 01, 01, 0, 0, 0, localzone())
 
 # ╔═╡ 0b45912a-f364-11ea-09e7-1ffbba3658d0
-md"Getting the hour angle requires calculating the local sidereal time (LST) for a specific place and date, which requires the UTC. The conversion from EST to UTC is simply to add 4 hours."
+md"Getting the hour angle requires calculating the local sidereal time (LST) for a specific place and date, which requires the UTC. The conversion from EST to UTC is simply to add 5 hours."
 
 # ╔═╡ e842f6ae-f363-11ea-13fa-c578eb84fc22
-date_utc = date_est + Dates.Hour(4)
+date_utc = date_est + TimeZones.Hour(5)
 
 # ╔═╡ 94285038-f362-11ea-0be7-b75cf6bd7127
 md"**NOTE:** The `lst` function is designed to read timezones from the computer, so in pratice there is no need to manually manipulate datetimes for local maps."
@@ -74,13 +74,13 @@ md"**NOTE:** The `lst` function is designed to read timezones from the computer,
 LST = lst(date_utc, λ, localtime=false)
 
 # ╔═╡ c838cf00-f38d-11ea-2b7d-c1f36f5c2f4a
-convert(HMS, LST)  # Astronav value = (5h, 48m, 6.461s)
+convert(HMS, LST)  # Astronav value = (6h, 48, 16.318s)
 
 # ╔═╡ 3ceb1ed2-f370-11ea-0bf3-e37cab474aa6
 ha = lha(LST, α)
 
 # ╔═╡ cc3b3a04-f38e-11ea-127a-65beb0237f9f
-convert(HMS, ha)  # Astronav value = (3h, 16m, 17.371s)
+convert(HMS, ha)  # Astronav value = (4h, 16m, 27.223s)
 
 # ╔═╡ d02820de-f38c-11ea-2ad3-fba8fa600222
 md"Before solving the equations, convert qunatities to degrees and define two helper functions to avoid typing out `deg2rad` multiple times."
@@ -95,7 +95,7 @@ convert(DMS, alt)  # Astronav value = (41h, 11m, 33.059s)
 az = azimuth(alt, δ, ha)
 
 # ╔═╡ 97dbe1ce-f446-11ea-1cac-3fc3ca2ce8f8
-DMS(360, 0, 0) - convert(DMS, az)  # Astronav value = 359d 15m 40.108s
+DMS(360, 0, 0) - convert(DMS, az)  # Astronav value = (359d, 07m, 20.480s)
 
 # ╔═╡ fdba389e-f38b-11ea-1d65-f1b54b70672c
 md"Since Polaris has an DEC ≈ 90, it's altitude should follow the simple relationship:
@@ -122,10 +122,10 @@ md"**Now transform the coordinates using the `equatorial2horizontal` function**"
 alt_easy, az_easy = equatorial2horizontal(ra, dec, lat, lon, date_est)
 
 # ╔═╡ 28868508-f447-11ea-14f8-872160646fa2
-alt_easy, alt
+alt_easy == alt
 
 # ╔═╡ cb957830-f447-11ea-3fe3-77192f4a62da
-az_easy, az
+az_easy == az
 
 # ╔═╡ Cell order:
 # ╟─c7ed2366-edf5-11ea-28d8-35dc55156fea

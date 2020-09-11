@@ -92,7 +92,7 @@ Input:
     dec::Coordinate - object declination
     lat::Coordinate - observer latitude
     lon::Coordinate - observer longitude 
-    datetime::DateTime - observer date and time 
+    datetime::ZonedDateTime - observer date and time 
 
 Optional:
 
@@ -103,7 +103,7 @@ Output:
     alt::DecimalDegree - object altitude
     az::DecimalDegree - object azimuth
 """
-function equatorial2horizontal(α::Coordinate,  δ::Coordinate, ϕ::Coordinate, λ::Coordinate, datetime::DateTime; localtime=true)
+function equatorial2horizontal(α::Coordinate,  δ::Coordinate, ϕ::Coordinate, λ::Coordinate, datetime::ZonedDateTime; localtime=true)
 
     LST = lst(datetime, λ, localtime=localtime)
     LHA = lha(LST, α)

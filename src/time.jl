@@ -13,21 +13,6 @@ const JCEN = 36525.0  # One Julian century
 
 
 """
-local2utc(date::DateTime)
-
-Convert local date-time to UTC. 
-"""
-function local2utc(date::DateTime)
-	zoned = ZonedDateTime(date, localzone())  # Zoned local time
-	utz = astimezone(zoned, TimeZone("UTC"))  # Zoned UTC time
-	# Convert to unzoned, "regular" datetime for Dates compatibility
-	utc = DateTime(year(utz), month(utz), day(utz),
-				   hour(utz), minute(utz), second(utz), millisecond(utz))
-	return utc
-end
-
-
-"""
 TAI(UTC) 
 
 Convert UTC to TAI, where TAI = UTC + 37 seconds, from IERS Bulletin A
@@ -80,18 +65,18 @@ Calculate the local sidereal time for a given date and time.
 
 Inputs:
 
-    datetime::DateTime - the datetime given as a DateTime type
+    datetime::ZonedateTime - the datetime given as a ZonedDateTime type
 
 Optional:
 
-    localtime::Bool  - set to false to use UTC datetime
+    localtime::Bool  - Assumes datetime is UTC when set to false (default:true)
 
 Output:
 
     lst::DecimalHour - the Local Sidereal Time in units of decimal hours
 """
-function lst(datetime::DateTime, λ::Coordinate; localtime::Bool=true)
-    utc = localtime ? local2utc(datetime) : datetime
+function lst(datetime::ZonedDateTime, λ::Coordinate)
+    utc = astimezone(datetime, TimeZone("UTC")) 
     ut1 = UT1(hour(utc)*3600 + minute(utc)*60 + second(utc), DUT1)  # Convert to seconds
     utc_jd = datetime2julian(utc)
     ut1_jd = UT1(utc_jd, DUT1/SECONDS_PER_DAY)

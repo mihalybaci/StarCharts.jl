@@ -19,10 +19,12 @@ These are some ideas for future improvements
     - Maybe 2 or 3 future dates with the same alt/az
 - Add a Chart type to store information to avoid recalculating 
   values where possible. The struct fields should include:
-  - datetime
-  - GMST
-  - LST
-  - LHA
-  - ecliptic
-  - Celestial equator
-  - List of Celestial objects
+    - datetime
+    - GMST
+    - LST
+    - LHA
+    - ecliptic
+    - Celestial equator
+    - List of Celestial objects
+- Include constellation lines (connecting the stars)
+- Include constellation areas (outlined the deined region)
