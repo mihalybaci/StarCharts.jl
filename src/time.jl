@@ -11,6 +11,24 @@ const SECONDS_PER_DAY = 86400.0  # seconds per day
 const J2000 = 2451545.0  # Start of the J2000 Epoch in Julian days
 const JCEN = 36525.0  # One Julian century
 
+"""
+zoned2julian(zdt::ZonedDateTime) -> Float
+
+Take the given `ZonedDateTime` and return the number of Julian calendar days
+since the Julian epoch `-4713-11-24T12:00:00` as a Float. This function 
+bootstraps off `Dates.datetime2julian`.
+"""
+zoned2julian(zdt::ZonedDateTime) = datetime2julian(DateTime(year(zdt), month(zdt), day(zdt),
+                                                   hour(zdt), minute(zdt), second(zdt), millisecond(zdt)))
+
+"""
+julian2zoned(jd::Real) -> ZonedDateTime
+
+Take the given `ZonedDateTime` and return the number of Julian calendar days
+since the Julian epoch `-4713-11-24T12:00:00` as a Float. This function 
+bootstraps off `Dates.datetime2julian`.
+"""
+julian2zoned(jd::Real, tz::TimeZone) = ZonedDateTime(julian2datetime(jd), tz)
 
 """
 TAI(UTC) 
@@ -78,7 +96,7 @@ Output:
 function lst(datetime::ZonedDateTime, λ::Coordinate)
     utc = astimezone(datetime, TimeZone("UTC")) 
     ut1 = UT1(hour(utc)*3600 + minute(utc)*60 + second(utc), DUT1)  # Convert to seconds
-    utc_jd = datetime2julian(utc)
+    utc_jd = zoned2julian(utc)
     ut1_jd = UT1(utc_jd, DUT1/SECONDS_PER_DAY)
     tᵤ = (ut1_jd - J2000)/JCEN
     t = (TT(TAI(utc_jd)) - TT(TAI(J2000)))/JCEN

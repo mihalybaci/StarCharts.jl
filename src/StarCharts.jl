@@ -1,12 +1,12 @@
 module StarCharts
 
-using Dates
 #using Plots
 using TimeZones
 
 import Base.+
 import Base.-
 import Base.convert
+import Dates: datetime2julian
 
 
 # Exports from chart.jl

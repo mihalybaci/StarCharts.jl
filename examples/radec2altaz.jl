@@ -67,11 +67,8 @@ md"Getting the hour angle requires calculating the local sidereal time (LST) for
 # ╔═╡ e842f6ae-f363-11ea-13fa-c578eb84fc22
 date_utc = date_est + TimeZones.Hour(5)
 
-# ╔═╡ 94285038-f362-11ea-0be7-b75cf6bd7127
-md"**NOTE:** The `lst` function is designed to read timezones from the computer, so in pratice there is no need to manually manipulate datetimes for local maps."
-
 # ╔═╡ 2003811c-f370-11ea-2cc8-875dd4f8fd4d
-LST = lst(date_utc, λ, localtime=false)
+LST = lst(date_utc, λ)
 
 # ╔═╡ c838cf00-f38d-11ea-2b7d-c1f36f5c2f4a
 convert(HMS, LST)  # Astronav value = (6h, 48, 16.318s)
@@ -89,7 +86,7 @@ md"Before solving the equations, convert qunatities to degrees and define two he
 alt = altitude(ϕ, δ, ha)
 
 # ╔═╡ 738877ae-f446-11ea-00b9-69cf9f54ce75
-convert(DMS, alt)  # Astronav value = (41h, 11m, 33.059s)
+convert(DMS, alt)  # Astronav value = (41d, 01m, 50.683s)
 
 # ╔═╡ 9d08356c-f444-11ea-154c-4b6aa2893d77
 az = azimuth(alt, δ, ha)
@@ -146,7 +143,6 @@ az_easy == az
 # ╠═6ee858e0-f362-11ea-17e9-9730aa54b8a0
 # ╟─0b45912a-f364-11ea-09e7-1ffbba3658d0
 # ╠═e842f6ae-f363-11ea-13fa-c578eb84fc22
-# ╟─94285038-f362-11ea-0be7-b75cf6bd7127
 # ╠═2003811c-f370-11ea-2cc8-875dd4f8fd4d
 # ╠═c838cf00-f38d-11ea-2b7d-c1f36f5c2f4a
 # ╠═3ceb1ed2-f370-11ea-0bf3-e37cab474aa6
