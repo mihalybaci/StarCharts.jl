@@ -194,10 +194,10 @@ convert(::Type{DecimalHour}, coord::HMS) = DecimalHour(s2d(coord.H, coord.M, coo
 convert(::Type{DecimalHour}, coord::DMS) = DecimalHour(s2d(coord.D, coord.M, coord.S)/15)
 convert(::Type{DecimalHour}, coord::Radian) = DecimalHour(rad2deg(coord.R)/15)
 
-convert(::Type{Radian}, coord::DecimalDegree) = Rad(deg2rad(coord.D))
-convert(::Type{Radian}, coord::DecimalHour) = Rad(deg2rad(coord.H*15))
-convert(::Type{Radian}, coord::DMS) = Rad(s2r(coord.D, coord.M, coord.S))
-convert(::Type{Radian}, coord::HMS) = Rad(s2r(coord.H, coord.M, coord.S)*15)
+convert(::Type{Radian}, coord::DecimalDegree) = Radian(deg2rad(coord.D))
+convert(::Type{Radian}, coord::DecimalHour) = Radian(deg2rad(coord.H*15))
+convert(::Type{Radian}, coord::DMS) = Radian(s2r(coord.D, coord.M, coord.S))
+convert(::Type{Radian}, coord::HMS) = Radian(s2r(coord.H, coord.M, coord.S)*15)
 
 # Define the addition/subtraction of coordinates of the same type
 function +(a::DecimalDegree, b::DecimalDegree)
