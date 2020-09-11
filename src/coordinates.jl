@@ -16,7 +16,7 @@
 """
 altitude(lat, dec, lha)
 
-Calculate the altitude of a given position (RA, DEC) in the sky.
+Calculate the altitude of a given position in the sky.
 
 Input:
         lat::Coordinate - Latitude of observer
@@ -34,6 +34,21 @@ function altitude(lat::Coordinate, dec::Coordinate, lha::Coordinate)
 	return DecimalDegree(rad2deg(asin(dsin(ϕ)*dsin(δ) + dcos(ϕ)*dcos(δ)*dcos(ha))))
 end
 
+
+"""
+azimuth(alt, dec, lha)
+
+Calculate the azimuth of a given position in the sky.
+
+Input:
+        alt::Coordinate - Altitude of object
+        dec::Coordinate - Declination of object
+        lha::Coordinate - Local hour angle of observer+star
+
+Output:
+
+        altitude::DecimalDegree - Azimuth of object in decimal degrees
+"""
 function azimuth(altitude::Coordinate, dec::Coordinate, lha::Coordinate)
 	alt = convert(DecimalDegree, altitude).D
 	δ = convert(DecimalDegree, dec).D
@@ -41,6 +56,8 @@ function azimuth(altitude::Coordinate, dec::Coordinate, lha::Coordinate)
 	
 	return DecimalDegree(rad2deg(asin(dsin(ha)*dcos(δ)/dcos(alt))))
 end
+
+
 """
 equatorial2horizontal(ra, dec)
 
