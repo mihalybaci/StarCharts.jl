@@ -16,6 +16,9 @@ md"# How to use StarCharts.jl"
 # ╔═╡ deb83a0e-edf5-11ea-0c00-b960cf65608e
 md"### This notebook will go through the steps to find the altitude and azimuth of Polaris from New York City on 2021 January 1 at midnight."
 
+# ╔═╡ b5dee1a4-f445-11ea-28a9-6b4482e8ae46
+md"**First go step-by-step**"
+
 # ╔═╡ 28618678-f2bb-11ea-0839-57eccfc1824e
 md"Load up the two packages we will need."
 
@@ -85,11 +88,14 @@ md"Before solving the equations, convert qunatities to degrees and define two he
 # ╔═╡ bc7193d8-f371-11ea-06cd-f311c11f6061
 alt = altitude(ϕ, δ, ha)
 
+# ╔═╡ 738877ae-f446-11ea-00b9-69cf9f54ce75
+convert(DMS, alt)  # Astronav value = 359d 15m 40.108s
+
 # ╔═╡ 9d08356c-f444-11ea-154c-4b6aa2893d77
 az = azimuth(alt, δ, ha)
 
-# ╔═╡ f27ca14c-f421-11ea-0972-fd70b503549b
-(convert(DMS, alt), convert(DMS, DecimalDegree(360)-az))
+# ╔═╡ 97dbe1ce-f446-11ea-1cac-3fc3ca2ce8f8
+DMS(360, 0, 0) - convert(DMS, az)  # Astronav value = 359d 15m 40.108s
 
 # ╔═╡ fdba389e-f38b-11ea-1d65-f1b54b70672c
 md"Since Polaris has an DEC ≈ 90, it's altitude should follow the simple relationship:
@@ -97,20 +103,34 @@ md"Since Polaris has an DEC ≈ 90, it's altitude should follow the simple relat
 	alt(Polaris) ≈ lat(NYC)
 	41.1925 ≈ 40.71
 
-Pretty good. As the star rotates around the North Celestial Pole, the maximum altitude can be found as well."
+Pretty good. As the star rotates around the North Celestial Pole, the maximum altitude can be found as well by the following equation
+
+	max_alt = (90 - δ) + ϕ
+
+which should yield an identical result to calculating the altitude with the local hour angle equal to zero."
 
 # ╔═╡ 47f0954c-f38d-11ea-0079-db8374e59d5b
-max_alt = max_altitude(ϕ, δ)
+max_alt = maximum_altitude(ϕ, δ)
 
 # ╔═╡ 18c3c31a-f424-11ea-0e59-f186e751f537
-convert(DMS, max_alt)
+convert(DMS, max_alt)  # Astronav value = (41d, 26m, 55.200s)
 
-# ╔═╡ a5a7c0ea-f43a-11ea-3e56-b3f6888675c3
+# ╔═╡ eb21981c-f446-11ea-03be-ff831a78d245
+md"**Now transform the coordinates using the `equatorial2horizontal` function**"
 
+# ╔═╡ 0dd9d4a8-f447-11ea-354a-0fe7def5cebd
+alt_easy, az_easy = equatorial2horizontal(ra, dec, lat, lon, date_est)
+
+# ╔═╡ 28868508-f447-11ea-14f8-872160646fa2
+alt_easy, alt
+
+# ╔═╡ cb957830-f447-11ea-3fe3-77192f4a62da
+az_easy, az
 
 # ╔═╡ Cell order:
 # ╟─c7ed2366-edf5-11ea-28d8-35dc55156fea
 # ╟─deb83a0e-edf5-11ea-0c00-b960cf65608e
+# ╟─b5dee1a4-f445-11ea-28a9-6b4482e8ae46
 # ╟─28618678-f2bb-11ea-0839-57eccfc1824e
 # ╠═37058e16-f443-11ea-30cc-5b8be9a6b7de
 # ╠═611cc5f2-edf9-11ea-2b42-b38a547930c4
@@ -133,9 +153,13 @@ convert(DMS, max_alt)
 # ╠═cc3b3a04-f38e-11ea-127a-65beb0237f9f
 # ╟─d02820de-f38c-11ea-2ad3-fba8fa600222
 # ╠═bc7193d8-f371-11ea-06cd-f311c11f6061
+# ╠═738877ae-f446-11ea-00b9-69cf9f54ce75
 # ╠═9d08356c-f444-11ea-154c-4b6aa2893d77
-# ╠═f27ca14c-f421-11ea-0972-fd70b503549b
+# ╠═97dbe1ce-f446-11ea-1cac-3fc3ca2ce8f8
 # ╟─fdba389e-f38b-11ea-1d65-f1b54b70672c
 # ╠═47f0954c-f38d-11ea-0079-db8374e59d5b
 # ╠═18c3c31a-f424-11ea-0e59-f186e751f537
-# ╠═a5a7c0ea-f43a-11ea-3e56-b3f6888675c3
+# ╟─eb21981c-f446-11ea-03be-ff831a78d245
+# ╠═0dd9d4a8-f447-11ea-354a-0fe7def5cebd
+# ╠═28868508-f447-11ea-14f8-872160646fa2
+# ╠═cb957830-f447-11ea-3fe3-77192f4a62da

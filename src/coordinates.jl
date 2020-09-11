@@ -99,24 +99,17 @@ Optional:
     localtime::Bool - Specifies if datetime is local, else assumes UTC (default is true)
 
 Output:
+
     alt::DecimalDegree - object altitude
     az::DecimalDegree - object azimuth
 """
-function equatorial2horizontal(ra::Coordinate, dec::Coordinate, lat::Coordinate, lon::Coordinate, datetime::DateTime; localtime=true)
-    # Convert LAT, LON to decimal degrees then to radians
-    ϕ = convert(Radian, lat)
-    λ = convert(Radian, lon)
+function equatorial2horizontal(α::Coordinate,  δ::Coordinate, ϕ::Coordinate, λ::Coordinate, datetime::DateTime; localtime=true)
 
-    # Convert RA, DEC to decimal degrees then to radians
-    α = convert(Radian,  ra)
-	δ = convert(Radian, dec)
-
-    # First calculate LST and LHA
     LST = lst(datetime, λ)
     LHA = lha(LST, α)
 
-    alt = altitude(lat, dec, LHA)
-    az = azimuth(alt, dec, LHA)
+    alt = altitude(ϕ, δ, LHA)
+    az = azimuth(alt, δ, LHA)
     
     return alt, az
 end
