@@ -111,6 +111,11 @@ function equatorial2horizontal(α::Coordinate,  δ::Coordinate, ϕ::Coordinate, 
     alt = altitude(ϕ, δ, LHA)
     az = azimuth(alt, δ, LHA)
     
+    println("LST = $LST")
+    println("LHA = $LHA")
+    println("alt = $alt")
+    println("az = $az")
+
     return alt, az
 end
 
