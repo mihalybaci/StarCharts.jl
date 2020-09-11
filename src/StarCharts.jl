@@ -13,7 +13,8 @@ import Base.convert
 export test_stars, make_chart
 
 # Exports from coordinates.jl
-export altitude, azimuth, equatorial2horizontal, ecliptic2equatorial, convert
+export altitude, azimuth, equatorial2horizontal, ecliptic2equatorial, 
+       convert, maximum_altitude
 
 # Exports from glossary.jl
 export glossary

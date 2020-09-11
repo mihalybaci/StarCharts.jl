@@ -82,14 +82,11 @@ convert(HMS, ha)  # Astronav value = (3h, 4m, 15s) = 3.0708h
 # ╔═╡ d02820de-f38c-11ea-2ad3-fba8fa600222
 md"Before solving the equations, convert qunatities to degrees and define two helper functions to avoid typing out `deg2rad` multiple times."
 
-# ╔═╡ da7edc58-f38c-11ea-2526-c73d6eeed18c
-begin
-	dsin(β) = sin(deg2rad(β))
-	dcos(β) = cos(deg2rad(β))
-end
-
 # ╔═╡ bc7193d8-f371-11ea-06cd-f311c11f6061
 alt = altitude(ϕ, δ, ha)
+
+# ╔═╡ 9d08356c-f444-11ea-154c-4b6aa2893d77
+az = azimuth(alt, δ, ha)
 
 # ╔═╡ f27ca14c-f421-11ea-0972-fd70b503549b
 (convert(DMS, alt), convert(DMS, DecimalDegree(360)-az))
@@ -101,13 +98,6 @@ md"Since Polaris has an DEC ≈ 90, it's altitude should follow the simple relat
 	41.1925 ≈ 40.71
 
 Pretty good. As the star rotates around the North Celestial Pole, the maximum altitude can be found as well."
-
-# ╔═╡ fa8752e4-f38c-11ea-0318-3be2676c7f92
-function max_altitude(lat::Coordinate, dec::Coordinate)
-	ϕ = convert(DecimalDegree, lat).D
-	δ = convert(DecimalDegree, dec).D
-	return DecimalDegree(90 - δ + ϕ )
-end
 
 # ╔═╡ 47f0954c-f38d-11ea-0079-db8374e59d5b
 max_alt = max_altitude(ϕ, δ)
@@ -142,11 +132,10 @@ convert(DMS, max_alt)
 # ╠═3ceb1ed2-f370-11ea-0bf3-e37cab474aa6
 # ╠═cc3b3a04-f38e-11ea-127a-65beb0237f9f
 # ╟─d02820de-f38c-11ea-2ad3-fba8fa600222
-# ╠═da7edc58-f38c-11ea-2526-c73d6eeed18c
 # ╠═bc7193d8-f371-11ea-06cd-f311c11f6061
+# ╠═9d08356c-f444-11ea-154c-4b6aa2893d77
 # ╠═f27ca14c-f421-11ea-0972-fd70b503549b
 # ╟─fdba389e-f38b-11ea-1d65-f1b54b70672c
-# ╠═fa8752e4-f38c-11ea-0318-3be2676c7f92
 # ╠═47f0954c-f38d-11ea-0079-db8374e59d5b
 # ╠═18c3c31a-f424-11ea-0e59-f186e751f537
 # ╠═a5a7c0ea-f43a-11ea-3e56-b3f6888675c3

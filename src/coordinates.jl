@@ -61,6 +61,27 @@ end
 
 
 """
+maximum_altitude(lat::Coordinate, dec::Coordinate)
+
+Calculate the maximum altitude an object for an observer. 
+
+Input:
+
+    lat::Coordinate - Latitude of observer
+    dec::Coordinate - Declination of object
+
+Output:
+
+    altitude::DecimalDegree - maximum altitude reached
+"""
+function maximum_altitude(lat::Coordinate, dec::Coordinate)
+	ϕ = convert(DecimalDegree, lat).D
+	δ = convert(DecimalDegree, dec).D
+	return DecimalDegree(90 - δ + ϕ )
+end
+
+
+"""
 equatorial2horizontal(ra, dec)
 
 Convert equatorial coordinates (RA, DEC) to horizontal coordinates (alt, az)
