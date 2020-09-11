@@ -64,11 +64,8 @@ date_est = ZonedDateTime(2021, 01, 01, 0, 0, 0, localzone())
 # ╔═╡ 0b45912a-f364-11ea-09e7-1ffbba3658d0
 md"Getting the hour angle requires calculating the local sidereal time (LST) for a specific place and date, which requires the UTC. The conversion from EST to UTC is simply to add 5 hours."
 
-# ╔═╡ e842f6ae-f363-11ea-13fa-c578eb84fc22
-date_utc = date_est + TimeZones.Hour(5)
-
 # ╔═╡ 2003811c-f370-11ea-2cc8-875dd4f8fd4d
-LST = lst(date_utc, λ)
+LST = lst(date_est, λ)
 
 # ╔═╡ c838cf00-f38d-11ea-2b7d-c1f36f5c2f4a
 convert(HMS, LST)  # Astronav value = (6h, 48, 16.318s)
@@ -142,7 +139,6 @@ az_easy == az
 # ╟─fb69c674-f361-11ea-2e09-796d4f27238f
 # ╠═6ee858e0-f362-11ea-17e9-9730aa54b8a0
 # ╟─0b45912a-f364-11ea-09e7-1ffbba3658d0
-# ╠═e842f6ae-f363-11ea-13fa-c578eb84fc22
 # ╠═2003811c-f370-11ea-2cc8-875dd4f8fd4d
 # ╠═c838cf00-f38d-11ea-2b7d-c1f36f5c2f4a
 # ╠═3ceb1ed2-f370-11ea-0bf3-e37cab474aa6

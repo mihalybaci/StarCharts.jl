@@ -94,18 +94,14 @@ Input:
     lon::Coordinate - observer longitude 
     datetime::ZonedDateTime - observer date and time 
 
-Optional:
-
-    localtime::Bool - Specifies if datetime is local, else assumes UTC (default is true)
-
 Output:
 
     alt::DecimalDegree - object altitude
     az::DecimalDegree - object azimuth
 """
-function equatorial2horizontal(α::Coordinate,  δ::Coordinate, ϕ::Coordinate, λ::Coordinate, datetime::ZonedDateTime; localtime=true)
+function equatorial2horizontal(α::Coordinate,  δ::Coordinate, ϕ::Coordinate, λ::Coordinate, datetime::ZonedDateTime)
 
-    LST = lst(datetime, λ, localtime=localtime)
+    LST = lst(datetime, λ)
     LHA = lha(LST, α)
 
     alt = altitude(ϕ, δ, LHA)

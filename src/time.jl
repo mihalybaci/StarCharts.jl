@@ -85,10 +85,6 @@ Inputs:
 
     datetime::ZonedateTime - the datetime given as a ZonedDateTime type
 
-Optional:
-
-    localtime::Bool  - Assumes datetime is UTC when set to false (default:true)
-
 Output:
 
     lst::DecimalHour - the Local Sidereal Time in units of decimal hours
