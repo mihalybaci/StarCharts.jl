@@ -29,11 +29,12 @@ export Coordinate, DecimalDegree, DecimalHour, DMS, HMS, Radian,
 # Exports from utils.jl
 
 
+# Include in this order to ensure everything loads properly
 include("types.jl")
-include("chart.jl")
-include("coordinates.jl")
-include("glossary.jl")
 include("time.jl")
+include("coordinates.jl")
 include("utils.jl")
+include("chart.jl")
+include("glossary.jl")
 
 end # module
