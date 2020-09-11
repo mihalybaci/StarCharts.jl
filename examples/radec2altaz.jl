@@ -88,20 +88,8 @@ begin
 	dcos(β) = cos(deg2rad(β))
 end
 
-# ╔═╡ 5c65102c-f38b-11ea-0ff9-dfc4cffdbd1f
-function azimuth(altitude::Coordinate, dec::Coordinate, lha::Coordinate)
-	alt = convert(DecimalDegree, altitude).D
-	δ = convert(DecimalDegree, dec).D
-	ha = convert(DecimalDegree, lha).D
-	
-	return DecimalDegree(rad2deg(asin(dsin(ha)*dcos(δ)/dcos(alt))))
-end
-
 # ╔═╡ bc7193d8-f371-11ea-06cd-f311c11f6061
 alt = altitude(ϕ, δ, ha)
-
-# ╔═╡ a5c89508-f38c-11ea-24ec-f170a5799b99
-az = azimuth(alt, δ, ha)
 
 # ╔═╡ f27ca14c-f421-11ea-0972-fd70b503549b
 (convert(DMS, alt), convert(DMS, DecimalDegree(360)-az))
@@ -154,9 +142,7 @@ convert(DMS, max_alt)
 # ╠═cc3b3a04-f38e-11ea-127a-65beb0237f9f
 # ╟─d02820de-f38c-11ea-2ad3-fba8fa600222
 # ╠═da7edc58-f38c-11ea-2526-c73d6eeed18c
-# ╠═5c65102c-f38b-11ea-0ff9-dfc4cffdbd1f
 # ╠═bc7193d8-f371-11ea-06cd-f311c11f6061
-# ╠═a5c89508-f38c-11ea-24ec-f170a5799b99
 # ╠═f27ca14c-f421-11ea-0972-fd70b503549b
 # ╟─fdba389e-f38b-11ea-1d65-f1b54b70672c
 # ╠═fa8752e4-f38c-11ea-0318-3be2676c7f92
