@@ -4,11 +4,11 @@
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ 37058e16-f443-11ea-30cc-5b8be9a6b7de
+using Dates
+
 # ╔═╡ 611cc5f2-edf9-11ea-2b42-b38a547930c4
-begin
-	using Dates  # This provides the DateTime 
-	using StarCharts
-end
+using StarCharts
 
 # ╔═╡ c7ed2366-edf5-11ea-28d8-35dc55156fea
 md"# How to use StarCharts.jl"
@@ -122,6 +122,7 @@ convert(DMS, max_alt)
 # ╟─c7ed2366-edf5-11ea-28d8-35dc55156fea
 # ╟─deb83a0e-edf5-11ea-0c00-b960cf65608e
 # ╟─28618678-f2bb-11ea-0839-57eccfc1824e
+# ╠═37058e16-f443-11ea-30cc-5b8be9a6b7de
 # ╠═611cc5f2-edf9-11ea-2b42-b38a547930c4
 # ╟─8dd6b554-f35c-11ea-00fc-411ca9664303
 # ╟─3e9ba93a-f35d-11ea-2c7d-5946335002aa

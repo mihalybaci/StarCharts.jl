@@ -13,13 +13,13 @@ import Base.convert
 export test_stars, make_chart
 
 # Exports from coordinates.jl
-export local2utc, gmst, lst, lha
-
-# Exports from coordinates.jl
-export equatorial2horizontal, ecliptic2equatorial, convert
+export altitude, azimuth, equatorial2horizontal, ecliptic2equatorial, convert
 
 # Exports from glossary.jl
 export glossary
+
+# Exports from time.jl
+export local2utc, gmst, lst, lha
 
 # Exports coordinates from types.jl
 export Coordinate, DecimalDegree, DecimalHour, DMS, HMS, Radian,
