@@ -105,7 +105,7 @@ Output:
 """
 function equatorial2horizontal(α::Coordinate,  δ::Coordinate, ϕ::Coordinate, λ::Coordinate, datetime::DateTime; localtime=true)
 
-    LST = lst(datetime, λ)
+    LST = lst(datetime, λ, localtime=localtime)
     LHA = lha(LST, α)
 
     alt = altitude(ϕ, δ, LHA)

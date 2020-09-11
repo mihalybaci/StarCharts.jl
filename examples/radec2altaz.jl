@@ -74,13 +74,13 @@ md"**NOTE:** The `lst` function is designed to read timezones from the computer,
 LST = lst(date_utc, λ, localtime=false)
 
 # ╔═╡ c838cf00-f38d-11ea-2b7d-c1f36f5c2f4a
-convert(HMS, LST)  # Astronav value = (5h, 36m, 4s) = 5.6666
+convert(HMS, LST)  # Astronav value = (5h, 48m, 6.461s)
 
 # ╔═╡ 3ceb1ed2-f370-11ea-0bf3-e37cab474aa6
 ha = lha(LST, α)
 
 # ╔═╡ cc3b3a04-f38e-11ea-127a-65beb0237f9f
-convert(HMS, ha)  # Astronav value = (3h, 4m, 15s) = 3.0708h
+convert(HMS, ha)  # Astronav value = (3h, 16m, 17.371s)
 
 # ╔═╡ d02820de-f38c-11ea-2ad3-fba8fa600222
 md"Before solving the equations, convert qunatities to degrees and define two helper functions to avoid typing out `deg2rad` multiple times."
@@ -89,7 +89,7 @@ md"Before solving the equations, convert qunatities to degrees and define two he
 alt = altitude(ϕ, δ, ha)
 
 # ╔═╡ 738877ae-f446-11ea-00b9-69cf9f54ce75
-convert(DMS, alt)  # Astronav value = 359d 15m 40.108s
+convert(DMS, alt)  # Astronav value = (41h, 11m, 33.059s)
 
 # ╔═╡ 9d08356c-f444-11ea-154c-4b6aa2893d77
 az = azimuth(alt, δ, ha)
