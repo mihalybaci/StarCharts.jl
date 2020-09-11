@@ -1,8 +1,13 @@
 
 # Tests for GMST calculation
 # Eventually move this into test.jl
+using Dates
 
-include("../src/StarCharts.jl")
+include("../src/types.jl")
+include("../src/utils.jl")
+
+import Base.+
+import Base.-
 
 regulus = Dict("RA" => HMS(10, 08, 43), "DEC" => HMS(11, 58, 02))
 
@@ -41,9 +46,9 @@ examples = [ex1, ex2, ex3, ex4, ex5]
 
 for ex in examples
     UTC = DateTime(ex["UTC"][1], ex["UTC"][2], ex["UTC"][3], ex["UTC"][4], ex["UTC"][5], ex["UTC"][6])
-    lon = ex["lon"][1] + ex["lon"][2]/60 + ex["lon"][3]/3600
+    lon = DecimalDegree(ex["lon"][1]/1.0 + ex["lon"][2]/60 + ex["lon"][3]/3600)
     lst_deg = lst(UTC, lon, localtime=false)
-    lst_hms = convert(HMS, Hdeg(lst_deg))
+    lst_hms = convert(HMS, lst_deg)
     println("""LST = $(ex["lst"])""")
     println("""LST = $(lst_hms)""")
  
