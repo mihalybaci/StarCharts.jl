@@ -27,4 +27,18 @@ These are some ideas for future improvements
     - Celestial equator
     - List of Celestial objects
 - Include constellation lines (connecting the stars)
-- Include constellation areas (outlined the deined region)
+- Include constellation areas (outlined the deined region)\
+- Find a way to download data from Simbad and store the result
+    - all naked eye objects (vmag < 6)
+    - all planets
+    - all Messier objects
+    - Notable NGC objects
+- Different charts with estimtaes based on telescope size
+- Zoom in maps on specific regions of sky
+- moonglow, transparent gray zone for 
+- Sunrise/sunset
+- Twilight times
+    - nautical
+    - civil 
+    - astronomical
+- Have chart and legend on page 1, print notable info page 2

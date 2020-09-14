@@ -116,10 +116,7 @@ md"**Now transform the coordinates using the `equatorial2horizontal` function**"
 alt_easy, az_easy = equatorial2horizontal(ra, dec, lat, lon, date_est)
 
 # ╔═╡ 28868508-f447-11ea-14f8-872160646fa2
-alt_easy == alt
-
-# ╔═╡ cb957830-f447-11ea-3fe3-77192f4a62da
-az_easy == az
+alt_easy == alt, az_easy == az
 
 # ╔═╡ Cell order:
 # ╟─c7ed2366-edf5-11ea-28d8-35dc55156fea
@@ -154,4 +151,3 @@ az_easy == az
 # ╟─eb21981c-f446-11ea-03be-ff831a78d245
 # ╠═0dd9d4a8-f447-11ea-354a-0fe7def5cebd
 # ╠═28868508-f447-11ea-14f8-872160646fa2
-# ╠═cb957830-f447-11ea-3fe3-77192f4a62da
