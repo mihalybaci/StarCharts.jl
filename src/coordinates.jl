@@ -77,7 +77,7 @@ Output:
 function maximum_altitude(lat::Coordinate, dec::Coordinate)
 	ϕ = convert(DecimalDegree, lat).D
 	δ = convert(DecimalDegree, dec).D
-	return DecimalDegree(90 - δ + ϕ )
+	return DecimalDegree(90 + δ - ϕ )
 end
 
 
@@ -106,11 +106,6 @@ function equatorial2horizontal(α::Coordinate,  δ::Coordinate, ϕ::Coordinate, 
 
     alt = altitude(ϕ, δ, LHA)
     az = azimuth(alt, δ, LHA)
-    
-    println("LST = $LST")
-    println("LHA = $LHA")
-    println("alt = $alt")
-    println("az = $az")
 
     return alt, az
 end
@@ -140,10 +135,18 @@ end
 """
 s2d(d, m, s)
 
-Converts a sexigessimal coordinate to decimal degrees
+Converts a sexigessimal coordinate to decimal degrees.
 """
-s2d(d, m, s) = (0 ≤ d) ? d + m/60 + s/3600 : d - m/60 - s/3600
-
+function s2d(d, m, s)
+    # This is all to handle negative values properly
+    if d < 0 || m < 0 || s < 0
+        dd = -abs(d) - abs(m)/60 - abs(s)/3600
+    else
+        dd = abs(d) + abs(m)/60 + abs(s)/3600
+    end
+    return dd
+end 
+s2d(dms) = s2d(dms...)
 
 """
 d2s(d)
@@ -151,9 +154,13 @@ d2s(d)
 Converts a decimal degree coordinate to sexigessimal
 """
 function d2s(dd)
-    d = (0 ≤ dd) ? floor(Int, dd) : ceil(Int, dd)
-    m = floor(Int, 60*(abs(dd)%1))
-    s = round(3600*(abs(dd) - abs(d) - m/60), digits=6)
+    # This is all to handle negative values properly
+    d = (dd ≥ 0) ? floor(Int, dd) : ceil(Int, dd)
+    m = (dd ≥ 0) ? floor(Int, (dd - d)*60) : ceil(Int, (dd - d)*60)
+    s = (dd - d - m/60)*3600
+    m = (d == 0) ? m : abs(m)
+    s = (d == 0 && m == 0) ? s : abs(s)
+
     return d, m, s
 end
 
@@ -164,6 +171,7 @@ sr2(d, m, s)
 Converts a sexigessimal coordinate to radians.
 """
 s2r(d, m, s) = deg2rad(s2d(d, m, s))
+s2r(dms) = deg2rad(s2d(dms))
 
 
 """
@@ -189,59 +197,28 @@ convert(::Type{T}, coord::T) where {T<: Coordinate} = coord
 # ^^^ If the input type and converted type are the same, then do nothing
 
 
-convert(::Type{DMS}, coord::DecimalDegree) = DMS(d2s(coord.D)...)
-convert(::Type{DMS}, coord::DecimalHour) = DMS(d2s(coord.H*15)...)
-convert(::Type{DMS}, coord::HMS) = DMS(d2s(s2d(coord.H, coord.M, coord.S)*15))
-convert(::Type{DMS}, coord::Radian) = DMS(rad2deg(coord.R)...)
+convert(::Type{DMS}, coord::DecimalDegree) = DMS(d2s(get(coord)))
+convert(::Type{DMS}, coord::DecimalHour) = DMS(d2s(get(coord)*15))
+convert(::Type{DMS}, coord::HMS) = DMS(d2s(s2d(get(coord))*15))
+convert(::Type{DMS}, coord::Radian) = DMS(d2s(rad2deg(get(coord))))
 
-convert(::Type{HMS}, coord::DecimalHour) = HMS(d2s(coord.H)...)
-convert(::Type{HMS}, coord::DecimalDegree) = HMS(d2s(coord.D/15)...)
-convert(::Type{HMS}, coord::DMS) = HMS(d2s(s2d(coord.D, coord.M, coord.S)/15))
-convert(::Type{HMS}, coord::Radian) = HMS(r2s(coord.R/15)...)
+convert(::Type{HMS}, coord::DecimalHour) = HMS(d2s(get(coord)))
+convert(::Type{HMS}, coord::DecimalDegree) = HMS(d2s(get(coord)/15))
+convert(::Type{HMS}, coord::DMS) = HMS(d2s(s2d(get(coord))/15))
+convert(::Type{HMS}, coord::Radian) = HMS(r2s(get(coord)/15))
 
-convert(::Type{DecimalDegree}, coord::DecimalHour) = DecimalDegree(coord.H*15)
-convert(::Type{DecimalDegree}, coord::DMS) = DecimalDegree(s2d(coord.D, coord.M, coord.S))
-convert(::Type{DecimalDegree}, coord::HMS) = DecimalDegree(s2d(coord.H, coord.M, coord.S)*15)
-convert(::Type{DecimalDegree}, coord::Radian) = DecimalDegree(rad2deg(coord.R))
+convert(::Type{DecimalDegree}, coord::DecimalHour) = DecimalDegree(get(coord)*15)
+convert(::Type{DecimalDegree}, coord::DMS) = DecimalDegree(s2d(get(coord)))
+convert(::Type{DecimalDegree}, coord::HMS) = DecimalDegree(s2d(get(coord))*15)
+convert(::Type{DecimalDegree}, coord::Radian) = DecimalDegree(rad2deg(get(coord)))
 
-convert(::Type{DecimalHour}, coord::DecimalDegree) = DecimalHour(coord.D/15)
-convert(::Type{DecimalHour}, coord::HMS) = DecimalHour(s2d(coord.H, coord.M, coord.S))
-convert(::Type{DecimalHour}, coord::DMS) = DecimalHour(s2d(coord.D, coord.M, coord.S)/15)
-convert(::Type{DecimalHour}, coord::Radian) = DecimalHour(rad2deg(coord.R)/15)
+convert(::Type{DecimalHour}, coord::DecimalDegree) = DecimalHour(get(coord)/15)
+convert(::Type{DecimalHour}, coord::HMS) = DecimalHour(s2d(get(coord)))
+convert(::Type{DecimalHour}, coord::DMS) = DecimalHour(s2d(get(coord))/15)
+convert(::Type{DecimalHour}, coord::Radian) = DecimalHour(rad2deg(get(coord))/15)
 
-convert(::Type{Radian}, coord::DecimalDegree) = Radian(deg2rad(coord.D))
-convert(::Type{Radian}, coord::DecimalHour) = Radian(deg2rad(coord.H*15))
-convert(::Type{Radian}, coord::DMS) = Radian(s2r(coord.D, coord.M, coord.S))
-convert(::Type{Radian}, coord::HMS) = Radian(s2r(coord.H, coord.M, coord.S)*15)
+convert(::Type{Radian}, coord::DecimalDegree) = Radian(deg2rad(get(coord)))
+convert(::Type{Radian}, coord::DecimalHour) = Radian(deg2rad(get(coord)*15))
+convert(::Type{Radian}, coord::DMS) = Radian(s2r(get(coord)))
+convert(::Type{Radian}, coord::HMS) = Radian(s2r(get(coord))*15)
 
-# Define the addition/subtraction of coordinates of the same type
-function +(a::DecimalDegree, b::DecimalDegree)
-    c = (a.D + b.D)%360  # -360 < c < 360
-    c = (c < 0) ? c + 360 : c  # 0 <= c <360
-    return DecimalDegree(c)
-end
-
-function +(a::DecimalHour, b::DecimalHour)
-    c = (a.H + b.H)%24  # -24 < c < 24
-    c = (c < 0) ? c + 24 : c  # 0 <= c <24
-    return DecimalHour(c)
-end
-
-# It may be faster to avoid the conversions, but this way is simpler to implement.
-+(a::DMS, b::DMS) = convert(DMS, convert(DecimalDegree, a) + convert(DecimalDegree, b))
-+(a::HMS, b::HMS) = convert(HMS, convert(DecimalHour, a) + convert(DecimalHour, b))
-
-function -(a::DecimalDegree, b::DecimalDegree)
-    c = (a.D - b.D)%360  # -360 < c < 360
-    c = (c < 0) ? c + 360 : c  # 0 <= c <360
-    return DecimalDegree(c)
-end
-
-function -(a::DecimalHour, b::DecimalHour)
-    c = (a.H - b.H)%24  # -24 < c < 24
-    c = (c < 0) ? c + 24 : c  # 0 <= c <24
-    return DecimalHour(c)
-end
-
--(a::DMS, b::DMS) = convert(DMS, convert(DecimalDegree, a) - convert(DecimalDegree, b))
--(a::HMS, b::HMS) = convert(HMS, convert(DecimalHour, a) - convert(DecimalHour, b))

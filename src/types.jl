@@ -36,12 +36,42 @@ HMS specifies hours-minutes-seconds coordinates and has the following fields:
     H::Int - Hours
     M::Int - Minutes
     S::Real - Seconds
+
+Values may be specified with signs (+ or -) or single letter abbreviations
+for the direction (N, S, E, W). Examples:
+
+    coord = HMS(h, m, s, k='N')
+    a = HMS(1, 1, 1)
+    b = HMS(-5, 0, 0.5)
+    c = HMS(180, 0, 0, 'W')
 """
 struct HMS <: Coordinate
     H::Int
     M::Int
     S::Real
+    function HMS(h, m, s, k='N')
+        # This way allows for any combination of uppercase, lowercase,
+        # character, or string entries
+        K = uppercase(string(k)) 
+        if K == "N" || K == "E"
+            nothing
+        elseif K == "S" || K == "W"
+            h = -abs(h)  # Just in case this happens -> (-10, 0, 0, 'W')
+        else
+            @warn "k entry not valid. Choose N, S, E, or W. Defaulting to N/E."
+        end
+        carry_s = Int(s÷60)
+        m += (m ≥ 0) ? carry_s : -carry_s
+        carry_m = Int(m÷60)
+        h = (h ≥ 0) ? (h + carry_m)%24 : (h - carry_m)%24
+        m -= carry_m*60
+        s -= carry_s*60
+    return new(h, m, s)
+    end
 end
+HMS(hms::Tuple{Int, Int, Real}) = HMS(hms...)
+# Accept N, S, E, W keys as well
+HMS(hms::Tuple{Int, Int, Real, Union{Char, String}}) =  HMS(hms...)
 
 """
 DMS
@@ -57,7 +87,29 @@ struct DMS <: Coordinate
     D::Int
     M::Int
     S::Real
+    # The following function handles cases where m/s > abs(-60) h>abs(24)
+    function DMS(d, m, s, k='E')
+        # This way allows for any combination of uppercase, lowercase,
+        # character, or string entries
+        K = uppercase(string(k)) 
+        if K == "N" || K == "E"
+            nothing
+        elseif K == "S" || K == "W"
+            d = -abs(d)  # Just in case this happens -> (-10, 0, 0, 'W')
+        else
+            @warn "k entry not valid. Choose N, S, E, or W. Defaulting to N/E."
+        end
+        carry_s = Int(s÷60)
+        m += (m ≥ 0) ? carry_s : -carry_s
+        carry_m = Int(m÷60)
+        d = (d ≥ 0) ? (d + carry_m)%360 : (d - carry_m)%360
+        m -= carry_m*60
+        s -= carry_s*60
+    return new(d, m, s)
+    end
 end
+DMS(dms::Tuple{Int, Int, Real}) = DMS(dms...)
+DMS(dms::Tuple{Int, Int, Real, Union{Char, String}}) =  DMS(dms...)
 
 """
 DecimalDegree
@@ -68,6 +120,7 @@ DecimalDegree specifies decimal degrees coordinates and has one field:
 """
 struct DecimalDegree <: Coordinate
     D::Real
+    DecimalDegree(dd) = new(dd%360)
 end
 
 """
@@ -79,6 +132,7 @@ DecimalHour specifies decimal hours coordinates and has one field:
 """
 struct DecimalHour <: Coordinate
     H::Real
+    DecimalHour(dh) = new(dh%24)
 end
 
 """
@@ -90,6 +144,7 @@ Radian specifies radians coordinates and has one field:
 """
 struct Radian <: Coordinate
     R::Real
+    Radian(r) = new(r%(2π))
 end
 
 
@@ -125,6 +180,7 @@ time of meridian transit
 maximum altitude at current location
 next period of visibility (object rise to object set)
 
+proper motion/space velocity -> add equations to calculate movement
 =#
 
 

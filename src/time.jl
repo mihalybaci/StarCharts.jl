@@ -91,7 +91,7 @@ Output:
 """
 function lst(datetime::ZonedDateTime, λ::Coordinate)
     utc = astimezone(datetime, TimeZone("UTC")) 
-    ut1 = UT1(hour(utc)*3600 + minute(utc)*60 + second(utc), DUT1)  # Convert to seconds
+    ut1 = UT1(hour(utc)*3600 + minute(utc)*60 + second(utc) + millisecond(utc), DUT1)  # Convert to seconds
     utc_jd = zoned2julian(utc)
     ut1_jd = UT1(utc_jd, DUT1/SECONDS_PER_DAY)
     tᵤ = (ut1_jd - J2000)/JCEN
